@@ -17,12 +17,42 @@ Categories from BsTauTau.cpp:
 """
 
 import ROOT
-import os
-import sys
-from samples import *
+import os, sys
+import argparse
+import utils.samples as samples
+
+def get_arguments():
+    
+    _defaults = {
+       "h_file"      : "histograms.root",
+       "year"        : "2018",
+       "output_dir"  : "$CMSSW_BASE/src/auxiliaries/shapes/"
+    }
+    parser = argparse.ArgumentParser(
+        description="Prepare histograms for CombineHarvester C++ code.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("--h_path",
+                        type=str, required=True,
+                        help="Path to the folder containing a .root file with the binned shapes."
+                        )
+    parser.add_argument("--h_file",
+                        type=str,
+                        help="Name of the .root file containing the binned shapes."
+                        )
+    parser.add_argument("-y", "--year",
+                        type=str,
+                        help="Year of the analysis (e.g., 2016, 2017, 2018)."
+                        )
+    parser.add_argument("--output_dir",
+                        type=str,
+                        help="Directory where the output bstautau.root file will be saved."
+                        )
+    parser.set_defaults(**_defaults)
+    return parser.parse_args()
 
 class HistogramPreparer:
-    def __init__(self, folder_name, output_dir="CMSSW_14_1_0_pre4/src/auxiliaries/shapes/"):
+    def __init__(self, folder_name, file_name, output_dir):
         """
         Initialize histogram preparer.
         
@@ -31,10 +61,15 @@ class HistogramPreparer:
             output_dir: Directory for output file (default matches C++ expectation)
         """
         # Construct path to histograms.root file
-        self.input_file = f"../plotter_project/plots/{folder_name}/histograms.root"
-        self.folder_name = folder_name
-        self.output_dir = output_dir
-        
+        self.input_file  = os.path.join(folder_name, file_name) 
+        self.folder_name = os.path.abspath(folder_name)
+        self.output_dir  = os.path.expandvars(output_dir)
+        if not os.path.exists(self.folder_name):
+            raise RuntimeError(f"Input folder not found: {self.folder_name}")
+            sys.exit(1)
+        print(f"[IN] {self.input_file}")
+        print(f"[OUT] {self.output_dir}")
+
         # Define all channels and their corresponding categories
         # This maps channel -> {category_name: variable_name}
         # All channels use the same mapping of category_name -> variable_name
@@ -43,22 +78,17 @@ class HistogramPreparer:
             '{channel}_tauhtauh': 'btagged_loose_jets_pt_above_20_for_histo_ParTRawTauhtauh_frac_general_exclusive',
             '{channel}_tauhtaue': 'btagged_loose_jets_pt_above_20_for_histo_ParTRawTauhtaue_frac_general_exclusive'
         }
-        channels = ['e', 'mu', 'ee', 'emu', 'mumu']
+        channels = ['e', 'mu', 'ee', 'emu', 'mumu'] #FIXME: Only emu for now, add others later
+        print(f"\t ttbar channels : {channels}")
         self.channel_categories = {
             channel: {
-            cat.format(channel=channel): var
-            for cat, var in base_categories.items()
-            }
-            for channel in channels
+                cat.format(channel=channel): var for cat, var in base_categories.items()
+            } for channel in channels
         }
+        print(f"\t ttbar-channels x categories : {len(channels) * len(base_categories)}")
         
         # Create output directory
         os.makedirs(self.output_dir, exist_ok=True)
-        
-        # Check if input file exists
-        if not os.path.exists(self.input_file):
-            raise RuntimeError(f"Input file not found: {self.input_file}")
-        
         # Open input file
         self.root_file = ROOT.TFile.Open(self.input_file, "READ")
         if not self.root_file or self.root_file.IsZombie():
@@ -88,11 +118,11 @@ class HistogramPreparer:
         # Signal
         elif sample == "bstautau":
             hist_clone.Scale(scale_factor * 0.1)
-            print(f"         Scaled {sample} by factor of {scale_factor * 0.1:.4f}")
+            print(f"         Scaled {sample} by factor of {scale_factor * 0.1:.4f}") # correct because the signal is 10x LHCb
         # Backgrounds
         else:
             hist_clone.Scale(scale_factor )
-            print(f"         Scaled {sample} by factor of {scale_factor * 0.7:.4f}")
+            print(f"         Scaled {sample} by factor of {scale_factor * 0.7:.4f}") # 1/sqrt(2) ?
         return hist_clone
     
     def create_bstautau_root_file(self):
@@ -109,9 +139,7 @@ class HistogramPreparer:
         output_file = ROOT.TFile(output_filename, "RECREATE")
         
         # Get all samples
-        all_samples = ["data_obs"] + mc_samples_names
-        
-        print(f"Creating bstautau.root with all 15 categories...")
+        all_samples = ["data_obs"] + samples.mc_samples_names
         
         total_categories = 0
         total_histograms = 0
@@ -122,7 +150,7 @@ class HistogramPreparer:
             print(f"\n=== Processing channel: {channel} ===")
             
             for category_name, variable in categories.items():
-                
+                print(f"\nProcessing category: {category_name} (variable: {variable})")
                 # Create directory for this category (bin)
                 bin_dir = output_file.mkdir(category_name)
                 bin_dir.cd()
@@ -142,10 +170,10 @@ class HistogramPreparer:
                         hist.Write()
                         
                         category_histograms += 1
-                        total_histograms += 1
+                        total_histograms    += 1
                     else:
-                        category_missing += 1
-                        missing_histograms += 1
+                        category_missing    += 1
+                        missing_histograms  += 1
                 
                 print(f"    -> {category_histograms} histograms written, {category_missing} missing in {category_name}")
                 total_categories += 1
@@ -171,9 +199,7 @@ class HistogramPreparer:
         """
         Run the histogram preparation.
         """
-        print("=== BsTauTau Histogram Preparer ===")
-        print(f"Input file: {self.input_file}")
-        print(f"Output directory: {self.output_dir}")
+        print("\n=== BsTauTau Histogram Preparer ===")
         
         # Create the bstautau.root file
         output_file = self.create_bstautau_root_file()
@@ -184,15 +210,13 @@ class HistogramPreparer:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python prepare_histograms.py <folder_name>")
-        print("Example: python3 prepare_histograms.py 12Aug2025_11h48m43s")
-        print("This will look for: ../plotter_project/plots/12Aug2025_11h48m43s/histograms.root")
-        print("And create: histograms_ready_for_combine/12Aug2025_11h48m43s/bstautau.root")
-        sys.exit(1)
     
-    folder_name = sys.argv[1]
+    args = get_arguments()
+    folder_name = args.h_path
     
     # Initialize and run histogram preparer
-    preparer = HistogramPreparer(folder_name)
+    preparer = HistogramPreparer(
+        folder_name, 
+        args.h_file, 
+        args.output_dir)
     preparer.run()

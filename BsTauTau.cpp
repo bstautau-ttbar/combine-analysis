@@ -14,6 +14,11 @@
 
 using namespace std;
 
+//FIXME
+// - year info in channel name
+// - create /datacard directory and save datacards there
+// - better naming of bins
+
 int main() {
   //! [part1]
   // First define the location of the "auxiliaries" directory where we can
@@ -30,20 +35,20 @@ int main() {
   // the vector below specifies a bin name and corresponding bin_id.
 
   ch::Categories cats = {
-      {1, "e_tauetaumu"},
-      {2, "e_tauetauh"},
-      {3, "e_tauhtauh"},
-      {4, "mu_tauetaumu"},
-      {5, "mu_tauetauh"},
-      {6, "mu_tauhtauh"},
-      {7, "ee_tauetaumu"},
-      {8, "ee_tauetauh"},
-      {9, "ee_tauhtauh"},
-      {10, "emu_tauetaumu"},
-      {11, "emu_tauetauh"},
+      {1,  "e_tauhtaue"},
+      {2,  "e_tauhtaumu"},
+      {3,  "e_tauhtauh"},
+      {4,  "mu_tauhtaue"},
+      {5,  "mu_tauhtaumu"},
+      {6,  "mu_tauhtauh"},
+      {7,  "ee_tauhtaue"},
+      {8,  "ee_tauhtaumu"},
+      {9,  "ee_tauhtauh"},
+      {10, "emu_tauhtaue"},
+      {11, "emu_tauhtaumu"},
       {12, "emu_tauhtauh"},
-      {13, "mumu_tauetaumu"},
-      {14, "mumu_tauetauh"},
+      {13, "mumu_tauhtaue"},
+      {14, "mumu_tauhtaumu"},
       {15, "mumu_tauhtauh"}
     };
 
@@ -73,9 +78,9 @@ int main() {
   cb.cp().process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "lumi_2018", "lnN", SystMap<>::init(1.026));
 
   // 2% uncertainty per muon
-  cb.cp().bin({"mu_tauetaumu","mu_tauetauh","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"emu_tauetaumu","emu_tauetauh","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"mumu_tauetaumu","mumu_tauetauh","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
+  cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
+  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
+  cb.cp().bin({"mumu_tauhtaue","mumu_tauhtaumu","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
 
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_normFake_stub4_bx1234", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_shape_stub4_bx1234", "shape", SystMap<>::init(1.00)); // example of shape uncertainty
