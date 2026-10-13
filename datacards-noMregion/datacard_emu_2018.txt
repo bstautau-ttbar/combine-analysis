@@ -1,0 +1,29 @@
+Combination of bs_tautau_1_13TeV_.txt  bs_tautau_2_13TeV_.txt  bs_tautau_3_13TeV_.txt
+imax 3 number of bins
+jmax 3 number of processes minus 1
+kmax 3 number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *    ch1  bs_tautau.input.root bs_tautau_1_13TeV/$PROCESS bs_tautau_1_13TeV/$PROCESS_$SYSTEMATIC
+shapes *    ch2  bs_tautau.input.root bs_tautau_2_13TeV/$PROCESS bs_tautau_2_13TeV/$PROCESS_$SYSTEMATIC
+shapes *    ch3  bs_tautau.input.root bs_tautau_3_13TeV/$PROCESS bs_tautau_3_13TeV/$PROCESS_$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          ch1     ch2     ch3   
+observation  76044   80221   317009
+----------------------------------------------------------------------------------------------------------------------------------
+bin                             ch1          ch1          ch1          ch1          ch2          ch2          ch2          ch2          ch3          ch3          ch3          ch3        
+process                         bstautau     tt_fullylep  tt_semilep   tt_had       bstautau     tt_fullylep  tt_semilep   tt_had       bstautau     tt_fullylep  tt_semilep   tt_had     
+process                         0            1            2            3            0            1            2            3            0            1            2            3          
+rate                            102.933      74307.6      1285.13      2.32344      110.057      79077.9      992.954      1.36524      297.832      312438       4375.8       8.13648    
+----------------------------------------------------------------------------------------------------------------------------------
+emu_eff                 lnN     1.01         1.01         1.01         1.01         1.01         1.01         1.01         1.01         1.01         1.01         1.01         1.01       
+lumi_2018               lnN     1.026        1.026        1.026        1.026        1.026        1.026        1.026        1.026        1.026        1.026        1.026        1.026      
+signal_norm             lnN     1.01         -            -            -            1.01         -            -            -            1.01         -            -            -          
+bkg_norm      rateParam ch1 tt_fullylep 1 
+bkg_norm      rateParam ch1 tt_had 1 
+bkg_norm      rateParam ch1 tt_semilep 1 
+bkg_norm      rateParam ch2 tt_fullylep 1 
+bkg_norm      rateParam ch2 tt_had 1 
+bkg_norm      rateParam ch2 tt_semilep 1 
+bkg_norm      rateParam ch3 tt_fullylep 1 
+bkg_norm      rateParam ch3 tt_had 1 
+bkg_norm      rateParam ch3 tt_semilep 1 
