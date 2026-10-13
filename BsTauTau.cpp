@@ -33,11 +33,9 @@ int main() {
 
   // Here we will just define two categories for an 13TeV analysis. Each entry in
   // the vector below specifies a bin name and corresponding bin_id.
-
+  /*
   ch::Categories cats = {
-      {1,  "e_tauhtaue"},
-      {2,  "e_tauhtaumu"},
-      {3,  "e_tauhtauh"},
+      
       {4,  "mu_tauhtaue"},
       {5,  "mu_tauhtaumu"},
       {6,  "mu_tauhtauh"},
@@ -51,15 +49,34 @@ int main() {
       {14, "mumu_tauhtaumu"},
       {15, "mumu_tauhtauh"}
     };
+    */
+
+  ch::Categories cats = { 
+      {1,  "emu_tauhtaue"},
+      {2,  "emu_tauhtaumu"},
+      {3,  "emu_tauhtauh"},
+      //{6, "mumu_tauhtaue_sr"},
+      //{7, "mumu_tauhtaue_cr"},
+      //{8, "mumu_tauhtaumu_sr"},
+      //{9, "mumu_tauhtaumu_cr"},
+      //{10, "mumu_tauhtauh_sr"},
+      //{11, "mumu_tauhtauh_cr"},
+      //{12, "mu_tauhtaue_sr"},
+      //{13, "mu_tauhtaue_cr"},
+      //{14, "mu_tauhtaumu_sr"},
+      //{15, "mu_tauhtaumu_cr"},
+      //{16, "mu_tauhtauh_sr"},
+      //{17, "mu_tauhtauh_cr"}
+    };
 
   vector<string> masses = {""};
-
+  // observed number of events | AddObservations(masses, analyses, eras, channels, categories)
   cb.AddObservations({"*"}, {"bs"}, {"13TeV"}, {"tautau"}, cats);
 
-  vector<string> bkg_procs = {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"};
-  cb.AddProcesses({"*"}, {"bs"}, {"13TeV"}, {"tautau"}, bkg_procs, cats, false);
-
+  // signal and background processes | AddProcesses(masses, analyses, eras, channels, processes, categories, isSignal)
+  vector<string> bkg_procs = {"tt_fullylep","tt_semilep","tt_had"};//{"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"};
   vector<string> sig_procs = {"bstautau"};
+  cb.AddProcesses({"*"}, {"bs"}, {"13TeV"}, {"tautau"}, bkg_procs, cats, false);
   cb.AddProcesses(masses, {"bs"}, {"13TeV"}, {"tautau"}, sig_procs, cats, true);
 
 
@@ -70,29 +87,30 @@ int main() {
   using ch::syst::bin_id;
   using ch::syst::process;
 
-
-  //! [part5]
-
-  //! [part6]
+  // ------- SYSTEMATICS ------- //
+  // N.B. placeholder values
   cb.cp().signals().AddSyst(cb, "signal_norm", "lnN", SystMap<>::init(1.01));
-  cb.cp().process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "lumi_2018", "lnN", SystMap<>::init(1.026));
+  cb.cp().process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "lumi_2018", "lnN", SystMap<>::init(1.026));
 
   // 2% uncertainty per muon
-  cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"mumu_tauhtaue","mumu_tauhtaumu","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
+  //cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
+  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
+  //cb.cp().bin({"mumu_tauhtaue","mumu_tauhtaumu","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
 
+
+  // rateParam
+  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(bkg_procs).AddSyst(cb, "bkg_norm", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_normFake_stub4_bx1234", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_shape_stub4_bx1234", "shape", SystMap<>::init(1.00)); // example of shape uncertainty
 
 
   //! [part7]
   cb.cp().backgrounds().ExtractShapes(
-      aux_shapes + "bstautau.root",
+      aux_shapes + "bstautau_2018.root",
       "$BIN/$PROCESS",
       "$BIN/$PROCESS_$SYSTEMATIC");
   cb.cp().signals().ExtractShapes(
-      aux_shapes + "bstautau.root", 
+      aux_shapes + "bstautau_2018.root", 
       "$BIN/$PROCESS$MASS",
       "$BIN/$PROCESS$MASS_$SYSTEMATIC");
   //! [part7]
