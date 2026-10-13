@@ -39,11 +39,11 @@ cmsenv
 ```
 
 ## Prepare histograms and run the fit
+```bash
+python3 prepare_histograms.py --h_path <path-to-root-file> -y 2018 --channels emu --test_samples --mc_only
 ```
-python3 prepare_histograms.py 12Aug2025_11h48m43s #folder name output of the plotter script
+This should copy the datacard into `auxiliaries/shapes/bstautau_<year>.root`, if not, copyt it there.
 ```
-This should copy the datacard into `auxiliaries/shapes/bstautau.root`, if not, copyt it there.
-```
-BsTauTau # should dave .txt datacards into datacards fodler
+BsTauTau # should dave .txt datacards into datacards folder
 combine_and_fit.sh
 ```

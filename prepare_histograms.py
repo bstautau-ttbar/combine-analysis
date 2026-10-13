@@ -84,15 +84,15 @@ class HistogramPreparer:
         # This maps channel -> {category_name: variable_name}
         # All channels use the same mapping of category_name -> variable_name
         base_categories = {
-            '{channel}_tauhtaumu'  : 'j_tauhtaumu_incl',
-            '{channel}_tauhtaue'   : 'j_tauhtaue_incl',
-            '{channel}_tauhtauh'   : 'j_tauhtauh_incl',
-            #'{channel}_tauhtaumu_sr'   : 'j_tauhtaumu_SR',
-            #'{channel}_tauhtaumu_cr'   : 'j_tauhtaumu_CR',
-            #'{channel}_tauhtauh_sr'    : 'j_tauhtauh_SR',
-            #'{channel}_tauhtauh_cr'    : 'j_tauhtauh_CR',
-            #'{channel}_tauhtaue_sr'    : 'j_tauhtaue_SR',
-            #'{channel}_tauhtaue_cr'    : 'j_tauhtaue_CR',
+            #'{channel}_tauhtaumu'  : 'j_tauhtaumu_incl',
+            #'{channel}_tauhtaue'   : 'j_tauhtaue_incl',
+            #'{channel}_tauhtauh'   : 'j_tauhtauh_incl',
+            '{channel}_tauhtaumu_sr'   : 'j_tauhtaumu_SR',
+            '{channel}_tauhtaumu_cr'   : 'j_tauhtaumu_CR',
+            '{channel}_tauhtauh_sr'    : 'j_tauhtauh_SR',
+            '{channel}_tauhtauh_cr'    : 'j_tauhtauh_CR',
+            '{channel}_tauhtaue_sr'    : 'j_tauhtaue_SR',
+            '{channel}_tauhtaue_cr'    : 'j_tauhtaue_CR',
         }
         
         print(f"\t ttbar channels : {channels}")
@@ -146,7 +146,7 @@ class HistogramPreparer:
         # Backgrounds
         else:
             hist_clone.Scale(scale_factor)
-            print(f"         Scaled {sample} by factor of {scale_factor:.2f}") # 1/sqrt(2) ?
+            print(f"         Scaled {sample} by factor of {scale_factor:.2f}")
         return hist_clone
     
     def create_bstautau_root_file(self):

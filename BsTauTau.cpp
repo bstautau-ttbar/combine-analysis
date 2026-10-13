@@ -52,9 +52,12 @@ int main() {
     */
 
   ch::Categories cats = { 
-      {1,  "emu_tauhtaue"},
-      {2,  "emu_tauhtaumu"},
-      {3,  "emu_tauhtauh"},
+      {1,  "emu_tauhtauh_sr"},
+      {2,  "emu_tauhtaumu_sr"},
+      {3,  "emu_tauhtaue_sr"},
+      {4,  "emu_tauhtauh_cr"},
+      {5,  "emu_tauhtaumu_cr"},
+      {6,  "emu_tauhtaue_cr"},
       //{6, "mumu_tauhtaue_sr"},
       //{7, "mumu_tauhtaue_cr"},
       //{8, "mumu_tauhtaumu_sr"},
@@ -94,12 +97,12 @@ int main() {
 
   // 2% uncertainty per muon
   //cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
+  cb.cp().bin({"emu_tauhtaue_sr","emu_tauhtaumu_sr","emu_tauhtauh_sr", "emu_tauhtaue_cr","emu_tauhtaumu_cr","emu_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
   //cb.cp().bin({"mumu_tauhtaue","mumu_tauhtaumu","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
 
 
   // rateParam
-  cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(bkg_procs).AddSyst(cb, "bkg_norm", "rateParam", SystMap<>::init(1.0)); // example of rateParam
+  cb.cp().bin({"emu_tauhtaue_sr","emu_tauhtaumu_sr","emu_tauhtauh_sr", "emu_tauhtaue_cr","emu_tauhtaumu_cr","emu_tauhtauh_cr"}).process(bkg_procs).AddSyst(cb, "bkg_norm", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_normFake_stub4_bx1234", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_shape_stub4_bx1234", "shape", SystMap<>::init(1.00)); // example of shape uncertainty
 

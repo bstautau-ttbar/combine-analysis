@@ -19,9 +19,9 @@ ROOT.gROOT.SetBatch(True)
 # ch -> category label, verified against BsTauTau.cpp's bin-id -> name map
 # and the datacard's "shapes" lines (bs_tautau_{1,2,3}_13TeV -> ch{1,2,3}).
 CHANNEL_LABELS = {
-    "ch1": "emu_tauhtaue",
-    "ch2": "emu_tauhtaumu",
-    "ch3": "emu_tauhtauh",
+    #"ch1": "emu_tauhtaue", "ch2": "emu_tauhtaumu", "ch3": "emu_tauhtauh",
+    "ch1": "emu_tauhtauh_sr", "ch2": "emu_tauhtaumu_sr", "ch3": "emu_tauhtaue_sr",
+    "ch4": "emu_tauhtauh_cr", "ch5": "emu_tauhtaumu_cr", "ch6": "emu_tauhtaue_cr",
 }
 BKG_PROCS = ["tt_fullylep", "tt_semilep", "tt_had"]  # stack order, bottom->top
 SIG_PROC = "bstautau"
