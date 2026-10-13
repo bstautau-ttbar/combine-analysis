@@ -122,7 +122,7 @@ class HistogramPreparer:
         # Backgrounds
         else:
             hist_clone.Scale(scale_factor )
-            print(f"         Scaled {sample} by factor of {scale_factor * 0.7:.4f}") # 1/sqrt(2) ?
+            print(f"         Scaled {sample} by factor of {scale_factor:.4f}")
         return hist_clone
     
     def create_bstautau_root_file(self):

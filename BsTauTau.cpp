@@ -111,7 +111,7 @@ int main() {
   // instance.
 
   // We create the output root file that will contain all the shapes.
-  TFile output("bs_tautau.input.root", "RECREATE");
+  TFile output("datacard/bs_tautau.input.root", "RECREATE");
 
   // Finally we iterate through each bin,mass combination and write a
   // datacard.
@@ -123,7 +123,7 @@ int main() {
       // where we must remember to include the "*" mass entry to get
       // all the data and backgrounds.
       cb.cp().bin({b}).mass({m, "*"}).WriteDatacard(
-          b + "_" + m + ".txt", output);
+          "datacard/" + b + "_" + m + ".txt", output);
     }
   }
   //! [part9]
