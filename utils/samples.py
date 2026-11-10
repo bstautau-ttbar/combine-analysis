@@ -67,10 +67,8 @@ mc_samples_names = [
     'st_tw',
     'st_antitw',
     'w',
-    'wext',
     'dy',
     'bstautau',
-    #'dyext' 
 ]
 
 files_names = dict()
@@ -82,9 +80,7 @@ files_names['tt_fullylep'] = 'TTTo2L2Nu'
 files_names['tt_semilep'] = 'TTToSemileptonic'
 files_names['tt_had'] = 'TTToHadronic'
 files_names['w'] = 'W'
-files_names['wext'] = 'W_ext'
 files_names['dy'] = 'DY'
-files_names['dyext'] = 'DY_ext'
 files_names['ww'] = 'WW'
 files_names['wz'] = 'WZ'
 files_names['zz'] = 'ZZ'
@@ -116,9 +112,7 @@ cross_sections  = { #(pb)
     "tt_fullylep": 88.51,       # (NNLO + NNLL) 
     "tt_had": 378.93,           # (NNLO + NNLL) 
     "w": 61526,                 #
-    "wext": 61526,              #
     "dy": 6077,                 #
-    "dyext": 6077,              #
     "wz": 47.13,                #
     "ww": 115.0,                # # CHECKKK
     "zz": 16.523,               #
@@ -134,9 +128,7 @@ cross_sections_relunc = { # for naive uncertainty propagation
     "tt_fullylep"   : _xsec_ttbar['uncertainty']['total'][0]/_xsec_ttbar['central'],
     "tt_had"        : _xsec_ttbar['uncertainty']['total'][0]/_xsec_ttbar['central'],
     "w"             : 0.0,            
-    "wext"          : 0.0,         
     "dy"            : 0.0,           
-    "dyext"         : 0.0,        
     "wz"            : 0.0,           
     "ww"            : 0.0,           
     "zz"            : 0.0,          
@@ -187,7 +179,5 @@ colours['st_antit'] = ROOT.TColor.GetColor("#ffa90e")
 colours['st_tw'] = ROOT.TColor.GetColor("#832db6")
 colours['st_antitw'] = ROOT.TColor.GetColor("#94a4a2")
 colours['w'] = ROOT.TColor.GetColor("#92dadd")
-colours['wext'] = ROOT.TColor.GetColor("#92dadd")
 colours['dy'] = ROOT.TColor.GetColor("#e76300")
-colours['dyext'] = ROOT.TColor.GetColor("#e76300")
 colours['bstautau'] = ROOT.TColor.GetColor("#ffa90e")

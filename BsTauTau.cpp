@@ -33,12 +33,15 @@ int main() {
 
   // Here we will just define two categories for an 13TeV analysis. Each entry in
   // the vector below specifies a bin name and corresponding bin_id.
-  /*
+/*
   ch::Categories cats = {
       
-      {4,  "mu_tauhtaue"},
-      {5,  "mu_tauhtaumu"},
-      {6,  "mu_tauhtauh"},
+      {1,  "mu_tauhtaue"},
+      {2,  "mu_tauhtaumu"},
+      {3,  "mu_tauhtauh"},
+      {4,  "e_tauhtaue"},
+      {5,  "e_tauhtaumu"},
+      {6,  "e_tauhtauh"},
       {7,  "ee_tauhtaue"},
       {8,  "ee_tauhtaumu"},
       {9,  "ee_tauhtauh"},
@@ -49,8 +52,7 @@ int main() {
       {14, "mumu_tauhtaumu"},
       {15, "mumu_tauhtauh"}
     };
-    */
-
+*/
   ch::Categories cats = { 
       {1,  "emu_tauhtauh_sr"},
       {2,  "emu_tauhtaumu_sr"},
@@ -58,18 +60,30 @@ int main() {
       {4,  "emu_tauhtauh_cr"},
       {5,  "emu_tauhtaumu_cr"},
       {6,  "emu_tauhtaue_cr"},
-      //{6, "mumu_tauhtaue_sr"},
-      //{7, "mumu_tauhtaue_cr"},
-      //{8, "mumu_tauhtaumu_sr"},
-      //{9, "mumu_tauhtaumu_cr"},
-      //{10, "mumu_tauhtauh_sr"},
-      //{11, "mumu_tauhtauh_cr"},
-      //{12, "mu_tauhtaue_sr"},
-      //{13, "mu_tauhtaue_cr"},
-      //{14, "mu_tauhtaumu_sr"},
-      //{15, "mu_tauhtaumu_cr"},
-      //{16, "mu_tauhtauh_sr"},
-      //{17, "mu_tauhtauh_cr"}
+      {7,  "mumu_tauhtauh_sr"},
+      {8,  "mumu_tauhtaumu_sr"},
+      {9,  "mumu_tauhtaue_sr"},
+      {10, "mumu_tauhtauh_cr"},
+      {11, "mumu_tauhtaumu_cr"},
+      {12, "mumu_tauhtaue_cr"},
+      {13, "ee_tauhtauh_sr"},
+      {14, "ee_tauhtaumu_sr"},
+      {15, "ee_tauhtaue_sr"},
+      {16, "ee_tauhtauh_cr"},
+      {17, "ee_tauhtaumu_cr"},
+      {18, "ee_tauhtaue_cr"},
+      {19, "e_tauhtauh_sr"},
+      {20, "e_tauhtaumu_sr"},
+      {21, "e_tauhtaue_sr"},
+      {22, "e_tauhtauh_cr"},
+      {23, "e_tauhtaumu_cr"},
+      {24, "e_tauhtaue_cr"},
+      {25, "mu_tauhtauh_sr"},
+      {26, "mu_tauhtaumu_sr"},
+      {27, "mu_tauhtaue_sr"},
+      {28, "mu_tauhtauh_cr"},
+      {29, "mu_tauhtaumu_cr"},
+      {30, "mu_tauhtaue_cr"}
     };
 
   vector<string> masses = {""};
@@ -77,7 +91,7 @@ int main() {
   cb.AddObservations({"*"}, {"bs"}, {"13TeV"}, {"tautau"}, cats);
 
   // signal and background processes | AddProcesses(masses, analyses, eras, channels, processes, categories, isSignal)
-  vector<string> bkg_procs = {"tt_fullylep","tt_semilep","tt_had"};//{"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"};
+  vector<string> bkg_procs = {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","dy"};//{"tt_fullylep","tt_semilep","tt_had"};
   vector<string> sig_procs = {"bstautau"};
   cb.AddProcesses({"*"}, {"bs"}, {"13TeV"}, {"tautau"}, bkg_procs, cats, false);
   cb.AddProcesses(masses, {"bs"}, {"13TeV"}, {"tautau"}, sig_procs, cats, true);
@@ -95,14 +109,19 @@ int main() {
   cb.cp().signals().AddSyst(cb, "signal_norm", "lnN", SystMap<>::init(1.01));
   cb.cp().process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "lumi_2018", "lnN", SystMap<>::init(1.026));
 
-  // 2% uncertainty per muon
-  //cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, {"tt_fullylep","tt_semilep","tt_had","ww","wz","zz","st_s","st_antit","st_tw","st_antitw","w","wext","dy"}})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
-  cb.cp().bin({"emu_tauhtaue_sr","emu_tauhtaumu_sr","emu_tauhtauh_sr", "emu_tauhtaue_cr","emu_tauhtaumu_cr","emu_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
+  // 2% uncertainty per lepton
+  //cb.cp().bin({"mu_tauhtaue","mu_tauhtaumu","mu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
   //cb.cp().bin({"mumu_tauhtaue","mumu_tauhtaumu","mumu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
-
-
+  //cb.cp().bin({"emu_tauhtaue","emu_tauhtaumu","emu_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.015));
+  //cb.cp().bin({"e_tauhtaue","e_tauhtaumu","e_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "e_eff", "lnN", SystMap<>::init(1.02));
+  //cb.cp().bin({"ee_tauhtaue","ee_tauhtaumu","ee_tauhtauh"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "e_eff", "lnN", SystMap<>::init(1.03));
+  cb.cp().bin({"emu_tauhtaue_sr","emu_tauhtaumu_sr","emu_tauhtauh_sr", "emu_tauhtaue_cr","emu_tauhtaumu_cr","emu_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "emu_eff", "lnN", SystMap<>::init(1.010));
+  cb.cp().bin({"mumu_tauhtaue_sr","mumu_tauhtaumu_sr","mumu_tauhtauh_sr", "mumu_tauhtaue_cr","mumu_tauhtaumu_cr","mumu_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mumu_eff", "lnN", SystMap<>::init(1.020));
+  cb.cp().bin({"ee_tauhtaue_sr","ee_tauhtaumu_sr","ee_tauhtauh_sr", "ee_tauhtaue_cr","ee_tauhtaumu_cr","ee_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "ee_eff", "lnN", SystMap<>::init(1.040));
+  cb.cp().bin({"e_tauhtaue_sr","e_tauhtaumu_sr","e_tauhtauh_sr", "e_tauhtaue_cr","e_tauhtaumu_cr","e_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "e_eff", "lnN", SystMap<>::init(1.020));
+  cb.cp().bin({"mu_tauhtaue_sr","mu_tauhtamu_sr","mu_tauhtauh_sr", "mu_tauhtaue_cr","mu_tauhtaumu_cr","mu_tauhtauh_cr"}).process(ch::JoinStr({sig_procs, bkg_procs})).AddSyst(cb, "mu_eff", "lnN", SystMap<>::init(1.010));
   // rateParam
-  cb.cp().bin({"emu_tauhtaue_sr","emu_tauhtaumu_sr","emu_tauhtauh_sr", "emu_tauhtaue_cr","emu_tauhtaumu_cr","emu_tauhtauh_cr"}).process(bkg_procs).AddSyst(cb, "bkg_norm", "rateParam", SystMap<>::init(1.0)); // example of rateParam
+  cb.cp().bin({"*"}).process(bkg_procs).AddSyst(cb, "bkg_norm", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_normFake_stub4_bx1234", "rateParam", SystMap<>::init(1.0)); // example of rateParam
   //cb.cp().bin({"stub4_bx1234"}).process({"Fake"}).AddSyst(cb, "CMS_EXO25010_shape_stub4_bx1234", "shape", SystMap<>::init(1.00)); // example of shape uncertainty
 
@@ -132,7 +151,7 @@ int main() {
   // instance.
 
   // We create the output root file that will contain all the shapes.
-  TFile output("bs_tautau.input.root", "RECREATE");
+  TFile output("datacards/bs_tautau.input.root", "RECREATE");
 
   // Finally we iterate through each bin,mass combination and write a
   // datacard.
@@ -144,7 +163,7 @@ int main() {
       // where we must remember to include the "*" mass entry to get
       // all the data and backgrounds.
       cb.cp().bin({b}).mass({m, "*"}).WriteDatacard(
-          b + "_" + m + ".txt", output);
+          "datacards/" + b + "_" + m + ".txt", output);
     }
   }
   //! [part9]

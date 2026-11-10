@@ -120,7 +120,8 @@ class HistogramPreparer:
 
     def get_histogram(self, channel, variable, sample):
         """Get histogram from ROOT file."""
-        hist_path = f"{channel}/{variable}/bstautau_not_scaled/lin/{sample}"
+        #hist_path = f"{channel}/{variable}/bstautau_not_scaled/lin/{sample}"
+        hist_path = f"{channel}/{variable}/{sample}"
         hist = self.root_file.Get(hist_path)
         
         if not hist:
