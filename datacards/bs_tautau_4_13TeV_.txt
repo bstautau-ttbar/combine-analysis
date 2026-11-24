@@ -1,0 +1,17 @@
+imax    1 number of bins
+jmax    11 number of processes minus 1
+kmax    * number of nuisance parameters
+--------------------------------------------------------------------------------
+shapes * bs_tautau_4_13TeV bs_tautau.input.root bs_tautau_4_13TeV/$PROCESS bs_tautau_4_13TeV/$PROCESS_$SYSTEMATIC
+--------------------------------------------------------------------------------
+bin          bs_tautau_4_13TeV 
+observation  235141.0        
+--------------------------------------------------------------------------------
+bin                    bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV bs_tautau_4_13TeV 
+process                tt_fullylep     tt_semilep      tt_had          ww              wz              zz              st_s            st_antit        st_tw           st_antitw       dy              bstautau        
+process                1               2               3               4               5               6               7               8               9               10              11              0               
+rate                   215643          2780.69         4.82655         221.27          48.4622         11.7819         6.66726         12.3926         7804.18         7841.04         561.054         26.5031         
+--------------------------------------------------------------------------------
+emu_eff        lnN     1.01            1.01            1.01            1.01            1.01            1.01            1.01            1.01            1.01            1.01            1.01            1.01            
+lumi_2018      lnN     1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           
+signal_norm    lnN     -               -               -               -               -               -               -               -               -               -               -               1.01            

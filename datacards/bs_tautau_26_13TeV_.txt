@@ -1,0 +1,16 @@
+imax    1 number of bins
+jmax    11 number of processes minus 1
+kmax    * number of nuisance parameters
+--------------------------------------------------------------------------------
+shapes * bs_tautau_26_13TeV bs_tautau.input.root bs_tautau_26_13TeV/$PROCESS bs_tautau_26_13TeV/$PROCESS_$SYSTEMATIC
+--------------------------------------------------------------------------------
+bin          bs_tautau_26_13TeV 
+observation  164156.0        
+--------------------------------------------------------------------------------
+bin                    bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV bs_tautau_26_13TeV 
+process                tt_fullylep     tt_semilep      tt_had          ww              wz              zz              st_s            st_antit        st_tw           st_antitw       dy              bstautau        
+process                1               2               3               4               5               6               7               8               9               10              11              0               
+rate                   18308.8         129190          94.0155         47.4116         78.9707         26.3495         157.388         308.078         4444.72         6795.69         1851.39         199.619         
+--------------------------------------------------------------------------------
+lumi_2018      lnN     1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           1.026           
+signal_norm    lnN     -               -               -               -               -               -               -               -               -               -               -               1.01            
